@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Event;
 use Illuminate\Http\Request;
 
+
 class EventController extends Controller
 {
 
@@ -16,25 +17,28 @@ class EventController extends Controller
     }
 
     /**
+
      * Store a newly created resource in storage.
      */
     public function store(Request $request)
     {
-        //
-
-        $event = Event::create([
-            $request->validate([
-                'name' => 'required | string|max:255',
-                'description' => 'nullable | string',
-                'start_date' => 'required|date',
-                'end_date' => 'required|date|after:start_date'
-
-
-            ]),
-            'user_id' => 1
+        // Validate the incoming request
+        $validatedData = $request->validate([
+            'name' => 'required|string|max:255',
+            'description' => 'nullable|string',
+            'start_time' => 'required|date',
+            'end_time' => 'required|date|after:start_time',
         ]);
+
+        // Add the user_id to the validated data
+        $validatedData['user_id'] = 1;
+
+        // Create the event with the validated data
+        $event = Event::create($validatedData);
+
         return $event;
     }
+
 
     /**
      * Display the specified resource.
@@ -45,7 +49,7 @@ class EventController extends Controller
         return $event;
     }
 
-    /**
+    /**0
      * Update the specified resource in storage.
      */
     public function update(Request $request, string $id)
