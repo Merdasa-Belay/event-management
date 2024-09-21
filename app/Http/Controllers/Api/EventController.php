@@ -2,15 +2,21 @@
 
 namespace App\Http\Controllers\Api;
 
-use App\Http\Controllers\Controller;
 use App\Http\Resources\EventResource;
 use App\Models\Event;
 use Illuminate\Http\Request;
+
+use Illuminate\Routing\Controller;
 
 
 class EventController extends Controller
 {
 
+
+    public function __construct()
+    {
+        $this->middleware('auth:sanctum')->except(['index', 'show']);
+    }
     public function index()
     {
         //
@@ -34,7 +40,7 @@ class EventController extends Controller
         ]);
 
         // Add the user_id to the validated data
-        $validatedData['user_id'] = 1;
+        $validatedData['user_id'] = $request->user()->id;
 
         // Create the event with the validated data
         $event = Event::create($validatedData);
