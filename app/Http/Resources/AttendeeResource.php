@@ -14,12 +14,12 @@ class AttendeeResource extends JsonResource
      */
     public function toArray($request)
     {
-        // Customize the attendee data you want to return in the API response
         return [
-            'id' => $this->id,
-            'name' => $this->name,
-            'email' => $this->email,
-            'description' => $this->description
+            'id' => $this->id, // Attendee ID
+            'user_id' => $this->user_id, // User ID
+            'name' => $this->user ? $this->user->name : null,  // Fetch name from the User model, or null if user doesn't exist
+            'email' => $this->user ? $this->user->email : null, // Fetch email from the User model, or null if user doesn't exist
+            'description' => $this->event->description, // Fetch description from the related Event model
         ];
     }
 }
